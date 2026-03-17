@@ -1,21 +1,35 @@
-# SolvaPay Cursor marketplace
+# SolvaPay Cursor Plugin
 
-Repository for SolvaPay Cursor Marketplace plugins.
+A Cursor marketplace plugin that helps AI assistants integrate SolvaPay faster, with built-in skills, rules, and MCP server configuration for docs and admin workflows.
 
-## Current release strategy
+## Overview
 
-- Ship one plugin first: `solvapay` (source: `plugins/solvapay`)
-- Prioritize SDK integration workflows
-- Include both:
-  - SolvaPay Docs MCP (`https://docs.solvapay.com/mcp`)
-  - SolvaPay Admin MCP (`https://mcp.solvapay.com/mcp`)
+This repository contains the SolvaPay Cursor marketplace plugin source and release assets.
 
-## Plugin manifest locations
+Current plugin scope:
+
+- Ship one plugin: `solvapay` (source: `plugins/solvapay`)
+- Prioritize SolvaPay SDK integration workflows
+- Include both MCP endpoints:
+  - SolvaPay Docs MCP: `https://docs.solvapay.com/mcp`
+  - SolvaPay Admin MCP: `https://mcp.solvapay.com/mcp`
+
+## Installation
+
+1. Open Cursor settings
+2. Go to **Plugins**
+3. Click **Browse Marketplace**
+4. Search for `SolvaPay`
+5. Click **Install**
+
+## Development
+
+Plugin manifest locations:
 
 - Marketplace manifest: `.cursor-plugin/marketplace.json`
 - Plugin manifest: `plugins/solvapay/.cursor-plugin/plugin.json`
 
-## Local validation
+Local validation:
 
 ```bash
 node scripts/validate-template.mjs
@@ -23,18 +37,23 @@ node scripts/validate-template.mjs
 
 ## Marketplace readiness checklist
 
-- Plugin metadata and keywords are production-ready.
-- Skills, rules, and MCP server config are explicitly declared in plugin manifest.
-- Skill routing prioritizes SDK integration and docs-grounded guidance.
-- Admin MCP setup is documented as optional for users without API keys.
-- Validator passes before submission.
-- Plugin folder name matches plugin name for clarity (`plugins/solvapay`).
+- Plugin metadata and keywords are production-ready
+- Skills, rules, and MCP server config are explicitly declared in the plugin manifest
+- Skill routing prioritizes SDK integration and docs-grounded guidance
+- Admin MCP setup is documented as optional for users without API keys
+- Validator passes before submission
+- Plugin folder name matches plugin name (`plugins/solvapay`)
 
 ## Future split policy
 
-Do not split into multiple plugins until at least two of these are observed:
+Do not split into multiple plugins until at least two of these are true:
 
-- clear request for separate installs by user persona
-- independent release cadence
-- support burden from mixed plugin scope
-- better marketplace discoverability with narrower plugin descriptions
+- Clear request for separate installs by user persona
+- Independent release cadence
+- Support burden from mixed plugin scope
+- Better marketplace discoverability with narrower plugin descriptions
+
+## Support
+
+- SolvaPay docs: [https://docs.solvapay.com](https://docs.solvapay.com)
+- Issues and requests: open an issue in this repository
