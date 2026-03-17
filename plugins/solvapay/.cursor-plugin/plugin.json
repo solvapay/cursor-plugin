@@ -1,11 +1,11 @@
 {
   "name": "solvapay",
   "displayName": "SolvaPay",
-  "version": "0.1.0",
-  "description": "Integrate SolvaPay SDK in Cursor with docs-grounded guidance and Admin MCP workflows.",
+  "version": "0.9.3",
+  "description": "Integrate SolvaPay SDK in Cursor with docs-grounded guidance and Admin MCP for account operations.",
   "author": {
     "name": "SolvaPay",
-    "email": "plugins@solvapay.com"
+    "email": "contact@solvapay.com"
   },
   "license": "MIT",
   "keywords": [
