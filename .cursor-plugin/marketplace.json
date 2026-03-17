@@ -1,0 +1,19 @@
+{
+  "name": "solvapay-marketplace",
+  "owner": {
+    "name": "SolvaPay",
+    "email": "plugins@solvapay.com"
+  },
+  "metadata": {
+    "description": "Official SolvaPay plugins for SDK integration and account operations in Cursor",
+    "version": "0.1.0",
+    "pluginRoot": "plugins"
+  },
+  "plugins": [
+    {
+      "name": "solvapay",
+      "source": "solvapay",
+      "description": "SolvaPay SDK integration guidance with Docs MCP and Admin MCP"
+    }
+  ]
+}

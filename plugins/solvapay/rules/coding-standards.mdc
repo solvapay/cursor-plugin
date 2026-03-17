@@ -1,0 +1,12 @@
+---
+description: SolvaPay integration defaults for safe and reliable SDK implementations
+alwaysApply: true
+---
+
+solvapay-integration-defaults:
+
+- Prefer official SolvaPay SDK helpers over raw HTTP calls when both are possible.
+- Keep `SOLVAPAY_SECRET_KEY` and webhook secrets server-side only.
+- Default to hosted checkout and customer portal flows unless embedded UI is explicitly required.
+- Require one successful sandbox path and one failure path before considering integration complete.
+- Keep paywall and access checks on server or MCP tool handlers, never browser-only.
