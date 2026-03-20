@@ -2,12 +2,6 @@
   "mcpServers": {
     "solvapay-docs": {
       "url": "https://docs.solvapay.com/mcp"
-    },
-    "solvapay-admin": {
-      "url": "https://mcp.solvapay.com/mcp",
-      "headers": {
-        "X-API-Key": "${SOLVAPAY_API_KEY}"
-      }
     }
   }
 }

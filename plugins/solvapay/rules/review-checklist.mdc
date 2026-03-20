@@ -1,5 +1,5 @@
 ---
-description: SolvaPay implementation review checklist for SDK and account workflows
+description: SolvaPay implementation review checklist for SDK integration workflows
 alwaysApply: false
 globs:
   - "**/*"
@@ -11,4 +11,4 @@ solvapay-review-checklist:
 - Verify docs retrieval uses SolvaPay Docs MCP first, with `llms.txt` fallback guidance.
 - Verify sandbox success and failure-path checks are documented.
 - Ensure no client code exposes secrets or performs trusted access checks without server validation.
-- Ensure Admin MCP steps are optional when credentials are not configured.
+- Ensure onboarding guidance clearly routes product and plan setup through SolvaPay Console.

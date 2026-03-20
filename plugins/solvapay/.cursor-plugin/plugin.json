@@ -2,7 +2,7 @@
   "name": "solvapay",
   "displayName": "SolvaPay",
   "version": "0.9.3",
-  "description": "Integrate SolvaPay SDK in Cursor with docs-grounded guidance and Admin MCP for account operations.",
+  "description": "Integrate SolvaPay SDK in Cursor with docs-grounded guidance and SolvaPay Docs MCP.",
   "author": {
     "name": "SolvaPay",
     "email": "contact@solvapay.com"

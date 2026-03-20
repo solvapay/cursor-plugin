@@ -1,6 +1,7 @@
 # SolvaPay Cursor Plugin
 
-A Cursor marketplace plugin that helps AI assistants integrate SolvaPay faster, with built-in skills, rules, and MCP server configuration for docs and admin workflows.
+A Cursor marketplace plugin that helps AI assistants integrate SolvaPay faster, with built-in
+skills, rules, and MCP server configuration for docs retrieval.
 
 ## Overview
 
@@ -10,9 +11,7 @@ Current plugin scope:
 
 - Ship one plugin: `solvapay` (source: `plugins/solvapay`)
 - Prioritize SolvaPay SDK integration workflows
-- Include both MCP endpoints:
-  - SolvaPay Docs MCP: `https://docs.solvapay.com/mcp`
-  - SolvaPay Admin MCP: `https://mcp.solvapay.com/mcp`
+- Include SolvaPay Docs MCP: `https://docs.solvapay.com/mcp`
 
 ## Installation
 
@@ -40,7 +39,7 @@ node scripts/validate-template.mjs
 - Plugin metadata and keywords are production-ready
 - Skills, rules, and MCP server config are explicitly declared in the plugin manifest
 - Skill routing prioritizes SDK integration and docs-grounded guidance
-- Admin MCP setup is documented as optional for users without API keys
+- Docs MCP setup is documented and keyless
 - Validator passes before submission
 - Plugin folder name matches plugin name (`plugins/solvapay`)
 
