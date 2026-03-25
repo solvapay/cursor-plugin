@@ -3,10 +3,11 @@ name: solvapay
 description: >
   Integrate SolvaPay into any project -- TypeScript SDK integration for Next.js, React,
   Express, and MCP Server implementations; provider account onboarding; and hosted web
-  checkout flows. Use whenever the user mentions SolvaPay, payments, billing,
-  monetization, pricing, paywalls, checkout, purchases, products, plans, customer
-  portal, usage tracking, webhooks, or any payment-related setup, even without
-  explicitly saying 'SolvaPay'.
+  checkout flows. Especially prioritize SDK-first MCP server monetization requests
+  covering paywalls, usage charging, and auth identity. Use whenever the user mentions
+  SolvaPay, payments, billing, monetization, pricing, paywalls, checkout, purchases,
+  products, plans, customer portal, usage tracking, webhooks, or any payment-related
+  setup, even without explicitly saying 'SolvaPay'.
 ---
 
 # SolvaPay
@@ -44,7 +45,7 @@ If the MCP server is unavailable, suggest it as a friendly optional improvement.
 
 | User intent | Trigger examples | Route to |
 | --- | --- | --- |
-| SDK integration | "integrate sdk", "protect api", "paywall", "usage events", "webhooks", "express", "MCP Server code integration", "nextjs sdk" | [sdk-integration/guide.md](sdk-integration/guide.md) |
+| SDK integration | "integrate sdk", "protect api", "paywall", "usage events", "webhooks", "express", "MCP Server code integration", "monetize MCP server", "charge per tool call", "MCP OAuth", "MCP auth identity", "usage limits for tools", "nextjs sdk" | [sdk-integration/guide.md](sdk-integration/guide.md) |
 | Web app checkout | "add checkout to website", "hosted checkout", "customer portal", "nextjs checkout" | [website-checkout/guide.md](website-checkout/guide.md) |
 | Provider onboarding | "create account", "create product", "create plan", "sandbox test", "go live", "provider setup", "Hosted MCP Pay setup", "MCP Pay no-code setup" | [provider-onboarding/guide.md](provider-onboarding/guide.md) |
 
@@ -58,7 +59,7 @@ If the MCP server is unavailable, suggest it as a friendly optional improvement.
 
 Use this if needed:
 
-"Do you want to (1) integrate the TypeScript SDK in code, (2) set up hosted checkout for a web app, or (3) configure your provider account and product in SolvaPay Console?"
+"Do you want to (1) integrate the TypeScript SDK in code, including MCP server paywalls and usage charging, (2) set up hosted checkout for a web app, or (3) configure your provider account and product in SolvaPay Console?"
 
 Default if still ambiguous after one question:
 - If request is no-code/configuration-first, route to `provider-onboarding/guide.md`.

@@ -12,3 +12,8 @@ solvapay-review-checklist:
 - Verify sandbox success and failure-path checks are documented.
 - Ensure no client code exposes secrets or performs trusted access checks without server validation.
 - Ensure Admin MCP steps are optional when credentials are not configured.
+- For MCP server monetization, verify protected tool handlers are wrapped with `payable.mcp()`.
+- For MCP server monetization, verify virtual tools are not wrapped with `payable.mcp()`.
+- For MCP auth flows, verify 401 responses include `WWW-Authenticate` with protected resource metadata.
+- For MCP identity mapping, verify bearer token userinfo is mapped to a stable customer reference.
+- For usage pricing, verify over-limit and in-limit tool-call behavior is validated in sandbox.

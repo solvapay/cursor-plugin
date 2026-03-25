@@ -1,19 +1,21 @@
 {
-  "name": "solvapay-marketplace",
+  "name": "solvapay-plugins",
   "owner": {
     "name": "SolvaPay",
-    "email": "plugins@solvapay.com"
+    "email": "contact@solvapay.com"
   },
   "metadata": {
-    "description": "Official SolvaPay plugins for SDK integration and account operations in Cursor",
-    "version": "0.1.0",
-    "pluginRoot": "plugins"
+    "description": "Official SolvaPay Cursor plugins for SDK integration, MCP server monetization, and account operations",
+    "version": "0.9.3",
+    "pluginRoot": "plugins",
+    "repository": "https://github.com/solvapay/cursor-plugin",
+    "homepage": "https://solvapay.com"
   },
   "plugins": [
     {
-      "name": "solvapay",
+      "name": "SolvaPay",
       "source": "solvapay",
-      "description": "SolvaPay SDK integration guidance with Docs MCP and Admin MCP"
+      "description": "SDK-first guidance for monetizing MCP servers with paywalls, usage charging, auth identity patterns, plus Docs/Admin MCP"
     }
   ]
 }

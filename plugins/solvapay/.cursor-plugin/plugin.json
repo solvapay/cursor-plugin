@@ -2,11 +2,13 @@
   "name": "solvapay",
   "displayName": "SolvaPay",
   "version": "0.9.3",
-  "description": "Integrate SolvaPay SDK in Cursor with docs-grounded guidance and Admin MCP for account operations.",
+  "description": "Integrate SolvaPay with SDK-first guidance for MCP server monetization, paywall enforcement, usage charging, and auth identity patterns.",
   "author": {
     "name": "SolvaPay",
     "email": "contact@solvapay.com"
   },
+  "repository": "https://github.com/solvapay/cursor-plugin",
+  "homepage": "https://docs.solvapay.com",
   "license": "MIT",
   "keywords": [
     "solvapay",
@@ -16,9 +18,15 @@
     "sdk",
     "mcp",
     "paywall",
+    "usage",
+    "metering",
     "checkout",
     "subscriptions",
-    "webhooks"
+    "webhooks",
+    "oauth",
+    "identity",
+    "mcp-pay",
+    "model-context-protocol"
   ],
   "skills": ["skills/solvapay"],
   "rules": ["rules"],

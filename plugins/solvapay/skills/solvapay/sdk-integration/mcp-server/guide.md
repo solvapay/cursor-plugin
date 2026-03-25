@@ -27,6 +27,15 @@ Add paywall protection and self-service tools to an MCP server using `@solvapay/
 - A product created in SolvaPay Console with at least one plan
 - `SOLVAPAY_SECRET_KEY` and `SOLVAPAY_PRODUCT_REF` set in the environment
 
+## Auth and identity policy
+
+- This guide assumes an HTTP MCP server using OAuth bearer tokens for caller identity.
+- Always map authenticated callers to a stable customer reference before protected tool execution.
+- If your product requires authentication for all paid operations, reject unauthenticated
+  `tools/call` requests with 401 instead of falling back to a shared identity.
+- Use an anonymous identity only when it is an explicit product decision (for example a limited
+  anonymous tier) and configure plan/limits accordingly.
+
 ## SDK initialization
 
 Create a shared config module. All other files import from here.
@@ -55,7 +64,7 @@ The adapter needs a function to extract customer identity from tool arguments. T
 ```typescript
 const getCustomerRef = (args: Record<string, unknown>) => {
   const auth = args?._auth as { customer_ref?: string } | undefined
-  return auth?.customer_ref || 'anonymous'
+  return auth?.customer_ref || null
 }
 ```
 
@@ -230,3 +239,4 @@ WWW-Authenticate: Bearer resource_metadata="<MCP_PUBLIC_BASE_URL>/.well-known/oa
 - [ ] Protected tool allows authenticated, in-limit calls and returns business logic result
 - [ ] Virtual tools (`get_user_info`, `upgrade`, `manage_account`) respond without paywall
 - [ ] Virtual tool handlers are NOT wrapped with `payable.mcp()`
+- [ ] If webhooks are enabled, signature verification and event handling follow [webhooks.md](../webhooks.md)

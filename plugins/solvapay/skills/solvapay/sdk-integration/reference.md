@@ -139,6 +139,18 @@ npm install @solvapay/server@preview @solvapay/next@preview @solvapay/react@prev
 - `SOLVAPAY_WEBHOOK_SECRET` (when webhooks enabled)
 - Auth provider vars (for example Supabase keys)
 
+## Credential Context Matrix
+
+Use the right secret in the right context to avoid auth confusion:
+
+- `SOLVAPAY_SECRET_KEY`: server-side SDK credential used by your application code for paywall checks,
+  usage events, checkout/customer sessions, and webhook-related operations.
+- `SOLVAPAY_API_KEY`: plugin-bundled Admin MCP credential used by Cursor MCP configuration
+  (`solvapay-admin` header `X-API-Key`) for account operations.
+
+These are separate environment variable names because they are consumed by different systems.
+Do not expose either value to client code or public environment variables.
+
 ## Guardrails
 
 - Never put `SOLVAPAY_SECRET_KEY` in `NEXT_PUBLIC_*` or client bundles.

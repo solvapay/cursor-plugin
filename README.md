@@ -1,18 +1,25 @@
 # SolvaPay Cursor Plugin
 
-A Cursor marketplace plugin that helps AI assistants integrate SolvaPay faster, with built-in skills, rules, and MCP server configuration for docs and admin workflows.
+A Cursor marketplace plugin that helps AI assistants integrate SolvaPay faster, with built-in skills, rules, and MCP server configuration for monetization, docs, and admin workflows.
 
 ## Overview
 
-This repository contains the SolvaPay Cursor marketplace plugin source and release assets.
+This repository contains the public source for the SolvaPay Cursor plugin.
 
-Current plugin scope:
+## What you can do with this plugin
 
-- Ship one plugin: `solvapay` (source: `plugins/solvapay`)
-- Prioritize SolvaPay SDK integration workflows
-- Include both MCP endpoints:
+- Get SDK-first guidance for SolvaPay integrations in Next.js, React, Express, and MCP servers
+- Monetize MCP servers with paywalls, usage charging, and auth/identity patterns
+- Access up-to-date docs and account operations through built-in MCP integrations:
   - SolvaPay Docs MCP: `https://docs.solvapay.com/mcp`
   - SolvaPay Admin MCP: `https://mcp.solvapay.com/mcp`
+
+## MCP monetization use cases
+
+- Add paywalls to MCP tools with `@solvapay/server`
+- Charge by usage with limits checks and usage event recording
+- Implement MCP auth and identity mapping (OAuth bearer token to stable customer reference)
+- Follow the MCP implementation path in `plugins/solvapay/skills/solvapay/sdk-integration/mcp-server/guide.md`
 
 ## Installation
 
@@ -22,7 +29,7 @@ Current plugin scope:
 4. Search for `SolvaPay`
 5. Click **Install**
 
-## Development
+## For contributors
 
 Plugin manifest locations:
 
@@ -34,24 +41,6 @@ Local validation:
 ```bash
 node scripts/validate-template.mjs
 ```
-
-## Marketplace readiness checklist
-
-- Plugin metadata and keywords are production-ready
-- Skills, rules, and MCP server config are explicitly declared in the plugin manifest
-- Skill routing prioritizes SDK integration and docs-grounded guidance
-- Admin MCP setup is documented as optional for users without API keys
-- Validator passes before submission
-- Plugin folder name matches plugin name (`plugins/solvapay`)
-
-## Future split policy
-
-Do not split into multiple plugins until at least two of these are true:
-
-- Clear request for separate installs by user persona
-- Independent release cadence
-- Support burden from mixed plugin scope
-- Better marketplace discoverability with narrower plugin descriptions
 
 ## Support
 
