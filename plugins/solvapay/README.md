@@ -18,8 +18,8 @@ Official Cursor Marketplace plugin for SolvaPay SDK integration, MCP server mone
 1. Install the plugin from Cursor Marketplace.
 2. Open Cursor MCP settings and confirm plugin MCP servers are visible:
    - `solvapay-docs` loads from the plugin automatically and needs no API key.
-   - `solvapay-admin` loads from the plugin and needs `SOLVAPAY_API_KEY` set to a valid
-     `sk_sandbox_...` or `sk_live_...` key before admin actions work.
+   - `solvapay-admin` loads from the plugin as a URL-only MCP server and authenticates
+     with OAuth + dynamic client registration (DCR) during the MCP connection flow.
 3. If either server does not appear, add a manual fallback entry in your Cursor MCP config
    using the values from `mcp.json`.
 4. Start with one of these prompts:
@@ -39,10 +39,10 @@ Official Cursor Marketplace plugin for SolvaPay SDK integration, MCP server mone
 
 ## Notes
 
-- If `SOLVAPAY_API_KEY` is not set, SDK guidance and docs retrieval still work.
-- Admin MCP actions become available after the API key is configured.
+- `solvapay-docs` and `solvapay-admin` load from plugin MCP config with URL-only entries.
+- Admin MCP actions become available after OAuth consent and DCR complete in Cursor.
 - Plugin-bundled MCP config is the default path; manual MCP config is only a fallback.
-- SDK server code uses `SOLVAPAY_SECRET_KEY`; plugin Admin MCP uses `SOLVAPAY_API_KEY`.
+- SDK server code uses `SOLVAPAY_SECRET_KEY` in your app/runtime environment.
 
 ## Validation
 

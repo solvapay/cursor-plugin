@@ -141,15 +141,14 @@ npm install @solvapay/server@preview @solvapay/next@preview @solvapay/react@prev
 
 ## Credential Context Matrix
 
-Use the right secret in the right context to avoid auth confusion:
+Use the right credential context to avoid auth confusion:
 
 - `SOLVAPAY_SECRET_KEY`: server-side SDK credential used by your application code for paywall checks,
   usage events, checkout/customer sessions, and webhook-related operations.
-- `SOLVAPAY_API_KEY`: plugin-bundled Admin MCP credential used by Cursor MCP configuration
-  (`solvapay-admin` header `X-API-Key`) for account operations.
+- `solvapay-admin` (Cursor plugin MCP server): URL-only MCP configuration that authenticates
+  via OAuth + dynamic client registration (DCR) during the MCP connection flow.
 
-These are separate environment variable names because they are consumed by different systems.
-Do not expose either value to client code or public environment variables.
+Do not expose `SOLVAPAY_SECRET_KEY` to client code or public environment variables.
 
 ## Guardrails
 

@@ -13,7 +13,7 @@
   },
   "plugins": [
     {
-      "name": "SolvaPay",
+      "name": "solvapay",
       "source": "solvapay",
       "description": "SDK-first guidance for monetizing MCP servers with paywalls, usage charging, auth identity patterns, plus Docs/Admin MCP"
     }
