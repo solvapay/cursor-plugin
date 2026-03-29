@@ -59,12 +59,12 @@ export const payable = solvaPay.payable({ product: productRef })
 
 ### getCustomerRef helper
 
-The adapter needs a function to extract customer identity from tool arguments. The `_auth` field is injected by the HTTP layer (see [OAuth bridge setup](#oauth-bridge-setup)).
+The adapter can read customer identity from MCP `extra.authInfo`, which is forwarded by `StreamableHTTPServerTransport` when `req.auth` is set.
 
 ```typescript
-const getCustomerRef = (args: Record<string, unknown>) => {
-  const auth = args?._auth as { customer_ref?: string } | undefined
-  return auth?.customer_ref || null
+const getCustomerRef = (_args: Record<string, unknown>, extra?: McpToolExtra) => {
+  const customerRef = extra?.authInfo?.extra?.customer_ref
+  return typeof customerRef === 'string' && customerRef.trim() ? customerRef : null
 }
 ```
 
@@ -78,9 +78,9 @@ async function createTask(args: { title: string }) {
 }
 
 const toolHandlers = {
-  create_task: payable.mcp(createTask, { getCustomerRef }),
-  get_task: payable.mcp(getTask, { getCustomerRef }),
-  list_tasks: payable.mcp(listTasks, { getCustomerRef }),
+  create_task: payable.mcp(createTask),
+  get_task: payable.mcp(getTask),
+  list_tasks: payable.mcp(listTasks),
 }
 ```
 
@@ -101,8 +101,8 @@ const freeTier = solvaPay.payable({ product: productRef, plan: 'pln_free' })
 const proTier = solvaPay.payable({ product: productRef, plan: 'pln_pro' })
 
 const toolHandlers = {
-  list_tasks: freeTier.mcp(listTasks, { getCustomerRef }),
-  create_task: proTier.mcp(createTask, { getCustomerRef }),
+  list_tasks: freeTier.mcp(listTasks),
+  create_task: proTier.mcp(createTask),
 }
 ```
 
@@ -116,104 +116,44 @@ Virtual tools provide self-service account management. They are **not** paywall-
 | `upgrade` | Returns available plans and checkout URLs |
 | `manage_account` | Returns a secure customer portal link |
 
-### Create and merge
+### Recommended: one-call registration with `McpServer`
 
 ```typescript
-const virtualTools = solvaPay.getVirtualTools({
+await solvaPay.registerVirtualToolsMcp(server, {
   product: productRef,
-  getCustomerRef,
 })
-
-const allTools = [
-  ...virtualTools.map(t => ({
-    name: t.name,
-    description: t.description,
-    inputSchema: t.inputSchema,
-  })),
-  ...businessTools,
-]
-
-const virtualToolHandlers = Object.fromEntries(
-  virtualTools.map(t => [t.name, t.handler]),
-)
-
-const allHandlers = {
-  ...virtualToolHandlers,
-  create_task: payable.mcp(createTask, { getCustomerRef }),
-  get_task: payable.mcp(getTask, { getCustomerRef }),
-}
 ```
 
 To exclude specific virtual tools, pass `exclude: ['manage_account']` in the options.
 
+### Advanced: custom server registration loop
+
+If you are not using `McpServer.registerTool()`, use `getVirtualTools()` and register each definition manually.
+
 ## OAuth bridge setup
 
-MCP clients authenticate via OAuth. Your server serves discovery endpoints that point to SolvaPay's hosted OAuth backend. SolvaPay handles login, dynamic client registration, and token issuance.
-
-### Well-known endpoints
-
-Serve these two JSON responses from your HTTP server.
-
-**`GET /.well-known/oauth-protected-resource`**
-
-```json
-{
-  "resource": "<MCP_PUBLIC_BASE_URL>",
-  "authorization_servers": ["<MCP_PUBLIC_BASE_URL>"],
-  "scopes_supported": ["openid", "profile", "email"]
-}
-```
-
-**`GET /.well-known/oauth-authorization-server`**
-
-```json
-{
-  "issuer": "<SOLVAPAY_OAUTH_BASE_URL>",
-  "authorization_endpoint": "<SOLVAPAY_OAUTH_BASE_URL>/v1/oauth/authorize",
-  "token_endpoint": "<SOLVAPAY_OAUTH_BASE_URL>/v1/oauth/token",
-  "registration_endpoint": "<SOLVAPAY_OAUTH_BASE_URL>/v1/oauth/register?product_ref=<SOLVAPAY_PRODUCT_REF>",
-  "token_endpoint_auth_methods_supported": ["client_secret_basic", "client_secret_post"],
-  "response_types_supported": ["code"],
-  "grant_types_supported": ["authorization_code", "refresh_token"],
-  "scopes_supported": ["openid", "profile", "email"],
-  "code_challenge_methods_supported": ["S256", "plain"]
-}
-```
-
-### Resolve customer identity
-
-Validate the bearer token by calling SolvaPay's userinfo endpoint:
+MCP clients authenticate via OAuth. Use `createMcpOAuthBridge()` to register well-known endpoints and attach `req.auth` for MCP transports.
 
 ```typescript
-async function resolveCustomerRef(authHeader?: string): Promise<string | null> {
-  if (!authHeader?.startsWith('Bearer ')) return null
-
-  const response = await fetch(
-    `${process.env.SOLVAPAY_OAUTH_BASE_URL}/v1/oauth/userinfo`,
-    { headers: { Authorization: authHeader } },
-  )
-  if (!response.ok) return null
-
-  const payload = await response.json() as {
-    customerRef?: string
-    customer_ref?: string
-    sub?: string
-  }
-  return payload.customerRef || payload.customer_ref || payload.sub || null
-}
+app.use(
+  ...createMcpOAuthBridge({
+    publicBaseUrl: process.env.MCP_PUBLIC_BASE_URL!,
+    apiBaseUrl: process.env.SOLVAPAY_API_BASE_URL || 'https://api.solvapay.com',
+    productRef: process.env.SOLVAPAY_PRODUCT_REF!,
+    mcpPath: '/mcp',
+    requireAuth: true,
+  }),
+)
 ```
 
-### Inject auth into tool arguments
+### What the helper does
 
-In your HTTP handler, before passing the request to the MCP framework, inject the customer ref:
+- Serves `GET /.well-known/oauth-protected-resource`
+- Serves `GET /.well-known/oauth-authorization-server`
+- Decodes bearer JWTs locally and sets `req.auth`
+- Returns `401` + `WWW-Authenticate` when bearer auth is missing/invalid
 
-```typescript
-if (request.body?.method === 'tools/call') {
-  request.body.params.arguments._auth = { customer_ref: customerRef }
-}
-```
-
-For unauthenticated requests, return 401 with:
+For unauthenticated requests:
 
 ```
 WWW-Authenticate: Bearer resource_metadata="<MCP_PUBLIC_BASE_URL>/.well-known/oauth-protected-resource"
@@ -226,12 +166,10 @@ WWW-Authenticate: Bearer resource_metadata="<MCP_PUBLIC_BASE_URL>/.well-known/oa
 | `SOLVAPAY_SECRET_KEY` | Yes | API secret key (`sk_...`) |
 | `SOLVAPAY_API_BASE_URL` | No | API base URL (defaults to `https://api.solvapay.com`) |
 | `SOLVAPAY_PRODUCT_REF` | Yes | Product reference for paywall and OAuth DCR |
-| `SOLVAPAY_OAUTH_BASE_URL` | Yes | SolvaPay OAuth server URL |
 | `MCP_PUBLIC_BASE_URL` | Yes | Your server's public origin |
 
 ## Verification checklist
 
-- [ ] `resolveCustomerRef` returns null for missing/invalid bearer tokens
 - [ ] Unauthenticated requests receive 401 with `WWW-Authenticate` header
 - [ ] `GET /.well-known/oauth-protected-resource` returns correct resource metadata
 - [ ] `GET /.well-known/oauth-authorization-server` returns endpoints pointing to SolvaPay
