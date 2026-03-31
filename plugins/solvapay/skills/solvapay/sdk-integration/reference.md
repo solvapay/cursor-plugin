@@ -14,7 +14,7 @@ Use this file for TypeScript SDK operation patterns and minimal payload shapes.
   - Check limits
   - Record usage
   - Create/process payment intent (embedded only)
-- Minimal install
+- Setup
 - Required environment variables
 - Guardrails
 - Retrieval hints
@@ -126,10 +126,21 @@ Use only when hosted checkout is not acceptable for the use case.
 
 Docs topic hint: `payment intents create` and `payment intents process`.
 
-## Minimal Install (typical web app)
+## Setup
+
+### Recommended: CLI init
 
 ```bash
-npm install @solvapay/server@preview @solvapay/next@preview @solvapay/react@preview @solvapay/auth@preview @solvapay/react-supabase@preview @supabase/supabase-js
+npx solvapay init
+```
+
+Handles provider authentication, `.env` configuration, `.gitignore` updates, and installs
+`@solvapay/server`, `@solvapay/core`, and `@solvapay/auth`.
+
+### Manual install (CI, Docker, or non-interactive environments)
+
+```bash
+npm install @solvapay/server @solvapay/next @solvapay/react @solvapay/auth @solvapay/react-supabase @supabase/supabase-js
 ```
 
 ## Required Environment Variables (Typical)

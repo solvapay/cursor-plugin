@@ -7,9 +7,11 @@ Official Cursor Marketplace plugin for SolvaPay SDK integration, MCP server mone
 - Primary audience: developers integrating SolvaPay SDK in code.
 - Included capabilities:
   - SolvaPay routing skill and domain guides (`skills/solvapay`)
+  - CLI-first SDK setup guidance (`npx solvapay init`) in SDK integration skills
   - SDK-first MCP server monetization guidance (paywalls, usage charging, auth/identity)
   - SolvaPay Docs MCP (`solvapay-docs`) for up-to-date documentation retrieval
   - SolvaPay Admin MCP (`solvapay-admin`) for product/plan/customer management
+  - Session-start hook for proactive SolvaPay setup detection
   - Lightweight rules for safety and implementation quality
 - Single-plugin strategy: ship one cohesive plugin first for faster review and clearer onboarding.
 
@@ -34,6 +36,8 @@ Official Cursor Marketplace plugin for SolvaPay SDK integration, MCP server mone
 - `skills/solvapay/`: integration, checkout, and onboarding guides
 - `skills/solvapay/sdk-integration/mcp-server/guide.md`: MCP paywall, usage, and auth identity patterns
 - `rules/`: SolvaPay safety and review rules
+- `hooks/hooks.json`: hook configuration for session-start setup detection
+- `scripts/detect-solvapay.sh`: lightweight workspace detection script used by hooks
 - `mcp.json`: SolvaPay Docs + Admin MCP server definitions
 - `.cursor-plugin/plugin.json`: plugin metadata and explicit component paths
 
@@ -43,6 +47,8 @@ Official Cursor Marketplace plugin for SolvaPay SDK integration, MCP server mone
 - Admin MCP actions become available after OAuth consent and DCR complete in Cursor.
 - Plugin-bundled MCP config is the default path; manual MCP config is only a fallback.
 - SDK server code uses `SOLVAPAY_SECRET_KEY` in your app/runtime environment.
+- `sessionStart` hook only injects context when it detects an incomplete SolvaPay setup.
+- Hook detection checks for `package.json`, SolvaPay dependencies, and `.env` key presence.
 
 ## Validation
 

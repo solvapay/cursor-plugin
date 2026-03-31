@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Official SolvaPay Cursor plugins for SDK integration, MCP server monetization, and account operations",
-    "version": "0.9.3",
+    "version": "0.9.4",
     "pluginRoot": "plugins",
     "repository": "https://github.com/solvapay/cursor-plugin",
     "homepage": "https://solvapay.com"

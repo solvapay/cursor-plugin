@@ -34,7 +34,7 @@ Ask one question if any of these are missing:
 
 ## Implementation Order
 
-1. Install SDK packages and configure env vars.
+1. Run `npx solvapay init` to authenticate and install base SDK packages.
 2. Confirm product exists with required plans in SolvaPay Console.
 3. Implement customer identity mapping from your auth layer.
 4. Add paywall/checkout flow.
@@ -43,13 +43,19 @@ Ask one question if any of these are missing:
 
 ## Stage 1: Setup
 
-- Install required SDK packages for selected stack.
+- Run `npx solvapay init` as the primary setup flow (handles auth, `.env`, `.gitignore`,
+  and base package install).
+- Install any additional stack-specific packages not covered by init (`@solvapay/next`,
+  `@solvapay/react`, `@solvapay/react-supabase`).
+- Use manual install only when CLI init cannot run (CI, Docker, or non-interactive
+  environments).
 - Confirm server-side secret handling (`SOLVAPAY_SECRET_KEY` only on server).
 - Ensure product and plan references are available before coding UI gates.
 
 ### Docs Discovery Hints
 
-- Topics: `typescript sdk intro`, `installation`, `quick start`, `core concepts`.
+- Topics: `typescript sdk intro`, `installation`, `quick start`, `core concepts`,
+  `cli setup`, `npx solvapay init`.
 - Retrieval hint: resolve these topics via MCP search first, fallback to `llms.txt` index scan.
 
 ## Stage 2: Auth and Customer Mapping

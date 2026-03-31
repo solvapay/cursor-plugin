@@ -2,12 +2,13 @@
 name: solvapay
 description: >
   Integrate SolvaPay into any project -- TypeScript SDK integration for Next.js, React,
-  Express, and MCP Server implementations; provider account onboarding; and hosted web
-  checkout flows. Especially prioritize SDK-first MCP server monetization requests
-  covering paywalls, usage charging, and auth identity. Use whenever the user mentions
-  SolvaPay, payments, billing, monetization, pricing, paywalls, checkout, purchases,
-  products, plans, customer portal, usage tracking, webhooks, or any payment-related
-  setup, even without explicitly saying 'SolvaPay'.
+  Express, and MCP Server implementations, including CLI setup via `npx solvapay init`;
+  provider account onboarding; and hosted web checkout flows. Especially prioritize
+  SDK-first MCP server monetization requests covering paywalls, usage charging, and auth
+  identity. Use whenever the user mentions SolvaPay, payments, billing, monetization,
+  pricing, paywalls, checkout, purchases, products, plans, customer portal, usage
+  tracking, webhooks, CLI setup, init project, or any payment-related setup, even without
+  explicitly saying 'SolvaPay'.
 ---
 
 # SolvaPay
@@ -45,7 +46,7 @@ If the MCP server is unavailable, suggest it as a friendly optional improvement.
 
 | User intent | Trigger examples | Route to |
 | --- | --- | --- |
-| SDK integration | "integrate sdk", "protect api", "paywall", "usage events", "webhooks", "express", "MCP Server code integration", "monetize MCP server", "charge per tool call", "MCP OAuth", "MCP auth identity", "usage limits for tools", "nextjs sdk" | [sdk-integration/guide.md](sdk-integration/guide.md) |
+| SDK integration | "integrate sdk", "protect api", "paywall", "usage events", "webhooks", "express", "MCP Server code integration", "monetize MCP server", "charge per tool call", "MCP OAuth", "MCP auth identity", "usage limits for tools", "nextjs sdk", "npx solvapay init", "cli setup", "scaffold", "init project" | [sdk-integration/guide.md](sdk-integration/guide.md) |
 | Web app checkout | "add checkout to website", "hosted checkout", "customer portal", "nextjs checkout" | [website-checkout/guide.md](website-checkout/guide.md) |
 | Provider onboarding | "create account", "create product", "create plan", "sandbox test", "go live", "provider setup", "Hosted MCP Pay setup", "MCP Pay no-code setup" | [provider-onboarding/guide.md](provider-onboarding/guide.md) |
 
