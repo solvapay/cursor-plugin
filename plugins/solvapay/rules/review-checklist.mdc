@@ -16,4 +16,4 @@ solvapay-review-checklist:
 - For MCP server monetization, verify virtual tools are not wrapped with `payable.mcp()`.
 - For MCP auth flows, verify 401 responses include `WWW-Authenticate` with protected resource metadata.
 - For MCP identity mapping, verify bearer token userinfo is mapped to a stable customer reference.
-- For usage pricing, verify over-limit and in-limit tool-call behavior is validated in sandbox.
+- For credit-based usage pricing, verify over-limit and in-limit tool-call behavior is validated in sandbox.

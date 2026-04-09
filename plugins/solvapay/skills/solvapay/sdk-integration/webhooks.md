@@ -122,7 +122,7 @@ app.post('/api/webhooks/solvapay', express.raw({ type: 'application/json' }), as
 | `purchase.suspended` | restrict access, notify customer |
 | `payment.succeeded` | record payment and clear payment retry flags |
 | `payment.failed` | mark account at risk and notify customer |
-| `payment.refunded` | record refund, adjust balance |
+| `payment.refunded` | record refund, reverse credits |
 | `payment.refund_failed` | log failure, retry or escalate |
 | `customer.created` | provision customer resources |
 | `customer.updated` | sync customer profile |
