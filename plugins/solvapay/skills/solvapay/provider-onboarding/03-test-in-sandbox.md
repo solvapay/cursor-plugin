@@ -9,7 +9,7 @@ Validate end-to-end behavior before enabling live mode.
 
 ## Actions
 
-1. Run checkout flow with Stripe test cards.
+1. Run checkout flow with Stripe test cards (sandbox Stripe is auto-provisioned).
 2. Verify paywall behavior on protected routes/tools.
 3. Verify successful payment unlocks access.
 4. Verify usage and purchases appear in SolvaPay Console.
