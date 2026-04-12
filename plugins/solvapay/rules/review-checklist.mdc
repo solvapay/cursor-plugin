@@ -7,7 +7,7 @@ globs:
 
 solvapay-review-checklist:
 
-- Confirm product and plan references in code/config match SolvaPay Console values.
+- Confirm product references in code/config match SolvaPay Console values.
 - Verify docs retrieval uses SolvaPay Docs MCP first, with `llms.txt` fallback guidance.
 - Verify sandbox success and failure-path checks are documented.
 - Ensure no client code exposes secrets or performs trusted access checks without server validation.
