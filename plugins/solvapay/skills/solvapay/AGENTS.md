@@ -21,8 +21,9 @@ Route user intent to the right domain guide and provide shared context.
 2. If intent is ambiguous, ask one disambiguation question.
 3. Read the matching domain guide:
    - [sdk-integration/guide.md](sdk-integration/guide.md) -- TypeScript SDK paywall, checkout, usage, webhooks
+   - [mcp-pay/guide.md](mcp-pay/guide.md) -- no-code hosted MCP monetization with bootstrap and plan configuration
    - [website-checkout/guide.md](website-checkout/guide.md) -- hosted checkout and customer portal for web apps
-   - [provider-onboarding/guide.md](provider-onboarding/guide.md) -- SolvaPay Console setup from account creation through live mode
+   - [provider-onboarding/guide.md](provider-onboarding/guide.md) -- SolvaPay Console onboarding: account + onboarding form, first product with plans, sandbox testing, then go-live with Stripe connection
 4. Follow the domain guide to completion.
 
 ## Documentation Sources

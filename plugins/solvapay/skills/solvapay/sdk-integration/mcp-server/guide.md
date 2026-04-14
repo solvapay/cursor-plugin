@@ -6,6 +6,7 @@ Add paywall protection and self-service tools to an MCP server using `@solvapay/
 
 - [Guardrails](#guardrails)
 - [Prerequisites](#prerequisites)
+- [Auth and identity policy](#auth-and-identity-policy)
 - [SDK initialization](#sdk-initialization)
 - [Wrap tool handlers](#wrap-tool-handlers)
 - [Register virtual tools](#register-virtual-tools)
@@ -23,7 +24,9 @@ Add paywall protection and self-service tools to an MCP server using `@solvapay/
 
 ## Prerequisites
 
-- `@solvapay/server` installed in the project
+- Run `npx solvapay init` to authenticate, write `SOLVAPAY_SECRET_KEY` to
+  `.env`, and install base SDK packages.
+- Base packages from init are sufficient for this flow.
 - A product created in SolvaPay Console with at least one plan
 - `SOLVAPAY_SECRET_KEY` and `SOLVAPAY_PRODUCT_REF` set in the environment
 
@@ -91,20 +94,6 @@ The adapter automatically:
 - Returns a structured paywall error with checkout URL when limits are exceeded
 
 No manual `PaywallError` handling is needed.
-
-### Different plans per tool
-
-Create separate `payable` instances:
-
-```typescript
-const freeTier = solvaPay.payable({ product: productRef, plan: 'pln_free' })
-const proTier = solvaPay.payable({ product: productRef, plan: 'pln_pro' })
-
-const toolHandlers = {
-  list_tasks: freeTier.mcp(listTasks),
-  create_task: proTier.mcp(createTask),
-}
-```
 
 ## Register virtual tools
 

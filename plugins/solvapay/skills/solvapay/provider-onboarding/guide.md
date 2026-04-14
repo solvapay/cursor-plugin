@@ -1,11 +1,11 @@
 # Provider Onboarding Guide
 
-Guide provider setup with an operational, step-by-step flow.
+Guide provider setup with a lightweight, docs-first flow.
 
 ## Purpose
 
 Use this guide for operational onboarding of a provider account, not application code implementation.
-Use product-first setup in SolvaPay Console where plans are configured within each product.
+Keep instructions minimal here and use docs topic pages for detailed procedures.
 
 ## Steps
 
@@ -15,6 +15,13 @@ Follow these files in order:
 2. [02-create-product-and-plan.md](02-create-product-and-plan.md)
 3. [03-test-in-sandbox.md](03-test-in-sandbox.md)
 4. [04-go-live.md](04-go-live.md)
+
+Canonical sequence:
+- Sign up or log in.
+- Complete provider onboarding fields: company name, website URL, country, currency.
+- Create first product and configure plans within that product, then choose path (Hosted MCP Pay or SDK).
+- Test in sandbox (test Stripe account is auto-provisioned).
+- Go live: connect Stripe for real payments (connect existing account or create a new one) and switch to live mode.
 
 ## Docs Discovery Hints
 
@@ -40,7 +47,8 @@ At completion provide:
 
 ## Task Progress
 
-- [ ] Account is created and billing connector is configured
-- [ ] Product and plan are configured
+- [ ] Account is created and provider onboarding fields are completed
+- [ ] First product is created and plan is configured within product setup
+- [ ] Integration path is chosen (Hosted MCP Pay or SDK)
 - [ ] Sandbox purchase flow is tested end to end
-- [ ] Go-live checklist is complete
+- [ ] Go-live flow is complete (Stripe connected during go-live, switched to live mode)
