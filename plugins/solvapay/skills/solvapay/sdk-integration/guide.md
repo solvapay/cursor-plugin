@@ -21,7 +21,10 @@ Detect stack from `package.json`:
 - `react` present and `next` absent -> follow [react/guide.md](react/guide.md) plus backend contract
 - `express` present -> follow [express/guide.md](express/guide.md)
 - `@modelcontextprotocol/*` present -> follow [mcp-server/guide.md](mcp-server/guide.md)
+- `supabase/functions/` directory exists OR `@supabase/supabase-js` present without `next`/`express` -> follow [supabase-edge/guide.md](supabase-edge/guide.md)
+- Deno project without Node framework -> follow [supabase-edge/guide.md](supabase-edge/guide.md)
 - If multiple match, ask which runtime is primary for paid operations.
+- If React + Supabase but unsure about backend: "Does the project already have a Next.js backend, or is the backend entirely on Supabase Edge Functions?"
 
 ## When To Ask Clarifying Questions
 
@@ -43,19 +46,19 @@ Ask one question if any of these are missing:
 
 ## Stage 1: Setup
 
-- Run `npx solvapay init` as the primary setup flow (handles auth, `.env`, `.gitignore`,
-  and base package install).
-- Install any additional stack-specific packages not covered by init (`@solvapay/next`,
-  `@solvapay/react`, `@solvapay/react-supabase`).
-- Use manual install only when CLI init cannot run (CI, Docker, or non-interactive
-  environments).
+- Run `npx solvapay init` to authenticate, set `SOLVAPAY_SECRET_KEY` in `.env`,
+  add `.env` to `.gitignore`, and install base packages:
+  `@solvapay/server`, `@solvapay/core`, `@solvapay/auth`.
+- Install additional stack-specific packages not covered by init (for example
+  `@solvapay/next`, `@solvapay/react`, `@solvapay/react-supabase`).
+- Use manual package installation only as a fallback when CLI setup cannot run
+  (for example CI images or restricted build environments).
 - Confirm server-side secret handling (`SOLVAPAY_SECRET_KEY` only on server).
 - Ensure product and plan references are available before coding UI gates.
 
 ### Docs Discovery Hints
 
-- Topics: `typescript sdk intro`, `installation`, `quick start`, `core concepts`,
-  `cli setup`, `npx solvapay init`.
+- Topics: `typescript sdk intro`, `installation`, `quick start`, `core concepts`.
 - Retrieval hint: resolve these topics via MCP search first, fallback to `llms.txt` index scan.
 
 ## Stage 2: Auth and Customer Mapping
@@ -110,6 +113,7 @@ Ask one question if any of these are missing:
 - **React**: [react/guide.md](react/guide.md)
 - **Express**: [express/guide.md](express/guide.md)
 - **MCP Server**: [mcp-server/guide.md](mcp-server/guide.md)
+- **Supabase Edge Functions**: [supabase-edge/guide.md](supabase-edge/guide.md)
 
 ## Shared References
 

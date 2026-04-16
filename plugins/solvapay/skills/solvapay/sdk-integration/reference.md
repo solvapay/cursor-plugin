@@ -9,20 +9,23 @@ Use this file for TypeScript SDK operation patterns and minimal payload shapes.
 - Package map
 - Common operations
 - Operation templates
+  - Bootstrap MCP product
+  - Configure MCP plans
   - Create checkout session
   - Create customer session
   - Check limits
   - Record usage
   - Create/process payment intent (embedded only)
-- Setup
+- Minimal install
 - Required environment variables
 - Guardrails
 - Retrieval hints
 
 ## Package Map
 
-- `@solvapay/server`: server SDK, paywall handlers, webhook verification
+- `@solvapay/server`: server SDK, paywall handlers, webhook verification, core helpers (`*Core` functions)
 - `@solvapay/next`: Next.js helpers for checkout/customer/access/renewal/activation routes
+- `@solvapay/supabase`: Supabase Edge Function adapter (one-liner handlers for all operations + `solvapayWebhook` factory)
 - `@solvapay/react`: UI provider/hooks for purchase and plan state
 - `@solvapay/react-supabase`: Supabase auth adapter for `@solvapay/react`
 - `@solvapay/auth`: auth utilities and adapters
@@ -35,11 +38,103 @@ Use this file for TypeScript SDK operation patterns and minimal payload shapes.
 - Check subscription/purchase access
 - Record usage events
 - Verify webhooks
+- Bootstrap MCP product
+- Configure MCP plans
 - Cancel renewal
 - Reactivate renewal
 - Activate plan (including plan switching)
 
 ## Operation Templates
+
+### Bootstrap MCP Product
+
+Use when the user wants hosted MCP monetization setup in one API call.
+
+Request shape:
+
+```json
+{
+  "name": "Docs Assistant",
+  "originUrl": "https://origin.example.com/mcp",
+  "plans": [
+    { "key": "free", "name": "Free", "price": 0, "freeUnits": 0 },
+    { "key": "pro", "name": "Pro", "price": 2000, "billingCycle": "monthly" }
+  ],
+  "tools": [
+    { "name": "list_docs", "planKeys": ["free", "pro"] },
+    { "name": "deep_research", "planKeys": ["pro"] }
+  ]
+}
+```
+
+Response shape:
+
+```json
+{
+  "product": { "reference": "prd_xxx" },
+  "mcpServer": { "mcpProxyUrl": "https://<slug>.mcp.solvapay.com/mcp" },
+  "planMap": {
+    "free": { "id": "plan_free_id", "reference": "pln_free" },
+    "pro": { "id": "plan_pro_id", "reference": "pln_pro" }
+  }
+}
+```
+
+Docs topic hint: `mcp pay bootstrap`, `create hosted mcp pay product`.
+
+### Configure MCP Plans
+
+Use after bootstrap to evolve pricing and tool mapping without recreating the product.
+
+Request shape (replace all plans):
+
+```json
+{
+  "plans": [
+    { "key": "free", "name": "Free", "price": 0, "freeUnits": 100 },
+    { "key": "pro", "name": "Pro", "price": 2000, "billingCycle": "monthly" }
+  ],
+  "toolMapping": [
+    { "name": "deep_research", "planKeys": ["pro"] },
+    { "name": "list_docs", "planKeys": ["free", "pro"] }
+  ]
+}
+```
+
+Request shape (revert to free-only):
+
+```json
+{
+  "plans": [
+    { "key": "free", "name": "Free", "price": 0, "freeUnits": 0 }
+  ]
+}
+```
+
+Request shape (remap tools only):
+
+```json
+{
+  "toolMapping": [
+    { "name": "deep_research", "planKeys": ["pro"] }
+  ]
+}
+```
+
+Response shape:
+
+```json
+{
+  "product": { "reference": "prd_xxx" },
+  "mcpServer": { "mcpProxyUrl": "https://<slug>.mcp.solvapay.com/mcp" },
+  "planMap": {
+    "free": { "id": "plan_free_id", "reference": "pln_free" },
+    "pro": { "id": "plan_pro_id", "reference": "pln_pro" }
+  }
+}
+```
+
+Docs topic hint: `configure mcp plans`.
 
 ### Create Checkout Session
 
@@ -129,6 +224,7 @@ Use when customer wants to stop auto-renewal. Access continues until period end.
 
 `@solvapay/next` helper: `cancelRenewal(request, { purchaseRef, reason? })`
 `@solvapay/server` core: `cancelPurchaseCore(request, { purchaseRef, reason? })`
+`@solvapay/supabase` handler: `cancelRenewal` (one-liner Edge Function)
 
 API endpoint: `POST /v1/sdk/purchases/{purchaseRef}/cancel`
 
@@ -147,6 +243,7 @@ Use when customer wants to undo a pending cancellation. Only works while purchas
 
 `@solvapay/next` helper: `reactivateRenewal(request, { purchaseRef })`
 `@solvapay/server` core: `reactivatePurchaseCore(request, { purchaseRef })`
+`@solvapay/supabase` handler: `reactivateRenewal` (one-liner Edge Function)
 
 API endpoint: `POST /v1/sdk/purchases/{purchaseRef}/reactivate`
 
@@ -167,6 +264,7 @@ Use to activate a product for a customer on a specific plan without checkout. Ha
 
 `@solvapay/next` helper: `activatePlan(request, { productRef, planRef })`
 `@solvapay/server` core: `activatePlanCore(request, { productRef, planRef })`
+`@solvapay/supabase` handler: `activatePlan` (one-liner Edge Function)
 
 API endpoint: `POST /v1/sdk/activate`
 
@@ -204,21 +302,31 @@ Use only when hosted checkout is not acceptable for the use case.
 
 Docs topic hint: `payment intents create` and `payment intents process`.
 
-## Setup
+## Minimal Install (typical web app)
 
-### Recommended: CLI init
+Preferred setup (SDK integration):
 
 ```bash
 npx solvapay init
 ```
 
-Handles provider authentication, `.env` configuration, `.gitignore` updates, and installs
-`@solvapay/server`, `@solvapay/core`, and `@solvapay/auth`.
-
-### Manual install (CI, Docker, or non-interactive environments)
+Manual fallback (when CLI setup cannot run):
 
 ```bash
 npm install @solvapay/server @solvapay/next @solvapay/react @solvapay/auth @solvapay/react-supabase @supabase/supabase-js
+```
+
+Supabase Edge Functions (Deno) -- no npm install needed, use `deno.json` import map:
+
+```json
+{
+  "imports": {
+    "@solvapay/supabase": "npm:@solvapay/supabase",
+    "@solvapay/server": "npm:@solvapay/server",
+    "@solvapay/auth": "npm:@solvapay/auth",
+    "@solvapay/core": "npm:@solvapay/core"
+  }
+}
 ```
 
 ## Required Environment Variables (Typical)
@@ -227,17 +335,6 @@ npm install @solvapay/server @solvapay/next @solvapay/react @solvapay/auth @solv
 - `SOLVAPAY_API_BASE_URL` (optional override)
 - `SOLVAPAY_WEBHOOK_SECRET` (when webhooks enabled)
 - Auth provider vars (for example Supabase keys)
-
-## Credential Context Matrix
-
-Use the right credential context to avoid auth confusion:
-
-- `SOLVAPAY_SECRET_KEY`: server-side SDK credential used by your application code for paywall checks,
-  usage events, checkout/customer sessions, and webhook-related operations.
-- `solvapay-admin` (Cursor plugin MCP server): URL-only MCP configuration that authenticates
-  via OAuth + dynamic client registration (DCR) during the MCP connection flow.
-
-Do not expose `SOLVAPAY_SECRET_KEY` to client code or public environment variables.
 
 ## Guardrails
 

@@ -21,7 +21,6 @@ Route user intent to the right domain guide and provide shared context.
 2. If intent is ambiguous, ask one disambiguation question.
 3. Read the matching domain guide:
    - [sdk-integration/guide.md](sdk-integration/guide.md) -- TypeScript SDK paywall, checkout, usage, webhooks
-   - [mcp-pay/guide.md](mcp-pay/guide.md) -- no-code hosted MCP monetization with bootstrap and plan configuration
    - [website-checkout/guide.md](website-checkout/guide.md) -- hosted checkout and customer portal for web apps
    - [provider-onboarding/guide.md](provider-onboarding/guide.md) -- SolvaPay Console onboarding: account + onboarding form, first product with plans, sandbox testing, then go-live with Stripe connection
 4. Follow the domain guide to completion.
@@ -47,7 +46,7 @@ If the MCP server is unavailable, suggest it as a friendly optional improvement.
 
 | User intent | Trigger examples | Route to |
 | --- | --- | --- |
-| SDK integration | "integrate sdk", "protect api", "paywall", "usage events", "webhooks", "express", "MCP Server code integration", "monetize MCP server", "charge per tool call", "MCP OAuth", "MCP auth identity", "usage limits for tools", "nextjs sdk", "npx solvapay init", "cli setup", "scaffold", "init project", "cancel renewal", "reactivate", "activate plan", "switch plan" | [sdk-integration/guide.md](sdk-integration/guide.md) |
+| SDK integration | "integrate sdk", "protect api", "paywall", "usage events", "webhooks", "express", "MCP Server code integration", "monetize MCP server", "charge per tool call", "MCP OAuth", "MCP auth identity", "usage limits for tools", "nextjs sdk", "npx solvapay init", "cli setup", "scaffold", "init project", "cancel renewal", "reactivate", "activate plan", "switch plan", "supabase edge functions", "deno", "edge runtime backend", "lovable backend" | [sdk-integration/guide.md](sdk-integration/guide.md) |
 | Web app checkout | "add checkout to website", "hosted checkout", "customer portal", "nextjs checkout" | [website-checkout/guide.md](website-checkout/guide.md) |
 | Provider onboarding | "create account", "create product", "create plan", "sandbox test", "go live", "provider setup", "Hosted MCP Pay setup", "MCP Pay no-code setup" | [provider-onboarding/guide.md](provider-onboarding/guide.md) |
 
