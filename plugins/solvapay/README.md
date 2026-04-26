@@ -26,9 +26,11 @@ Official Cursor Marketplace plugin for SolvaPay SDK integration, MCP server mone
    using the values from `mcp.json`.
 4. Start with one of these prompts:
    - "Monetize my MCP server tools with SolvaPay paywalls and usage charging."
+   - "Deploy a paywalled MCP server on Cloudflare Workers (or Supabase Edge) with SolvaPay."
    - "Add OAuth identity mapping for my MCP server paywall."
    - "Integrate SolvaPay SDK in my Next.js app."
    - "Protect my Express route with SolvaPay paywall checks."
+   - "Drop `<CurrentPlanCard />` into my account page to render self-serve billing UI."
    - "Create a product and monthly plan in SolvaPay."
 
 ## Included files

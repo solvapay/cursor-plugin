@@ -2,6 +2,16 @@
 
 Use App Router patterns and `@solvapay/next` helpers.
 
+## Prerequisites
+
+- Run `npx solvapay init` to authenticate, write `SOLVAPAY_SECRET_KEY` to
+  `.env`, and install base SDK packages.
+- Install additional packages for this flow:
+
+```bash
+npm install @solvapay/next @solvapay/react @solvapay/react-supabase
+```
+
 ## Docs References (Topic-Based)
 
 - Topics: `nextjs guide`, `webhooks`, `testing`, `error handling`, `checkout sessions`, `customer sessions`.
@@ -14,6 +24,8 @@ Use App Router patterns and `@solvapay/next` helpers.
 3. Wrap app in `SolvaPayProvider` and connect auth adapter.
 4. Gate premium views based on purchase/access state.
 5. Add webhook endpoint to synchronize purchase/payment events.
+
+> **Breaking change in SDK 1.1:** every `@solvapay/next` route-wrapper helper (`checkPurchase`, `createPaymentIntent`, `processPaymentIntent`, `activatePlan`, `cancelRenewal`, `reactivateRenewal`, `createCheckoutSession`, `createCustomerSession`, `syncCustomer`, `listPlans`, `getMerchant`, `getProduct`, `getPaymentMethod`, `getCustomerBalance`, `trackUsage`) now always returns `Promise<NextResponse>`. Collapse handlers to `return wrapperHelper(request, body)` — remove any `result instanceof NextResponse ? result : NextResponse.json(result)` branches. For Server Components, call the `*Core` primitives from `@solvapay/server` directly and check with `isErrorResult`. `getAuthenticatedUser` / `getCustomerReference` / `syncCustomer` data helpers are unchanged.
 
 ## Hosted vs Embedded Decision
 
@@ -33,6 +45,7 @@ Use App Router patterns and `@solvapay/next` helpers.
 - [ ] `/api/reactivate-renewal` implemented (if subscription management needed)
 - [ ] `/api/activate-plan` implemented (if free plans, credit activation, or plan switching needed)
 - [ ] `/api/list-plans` implemented (if plan selection UI needed)
+- [ ] `/api/merchant`, `/api/product`, `/api/payment-method` implemented (if you render branding, product details, or the mirrored card in account UI)
 
 ## Verification
 

@@ -6,8 +6,8 @@ alwaysApply: true
 solvapay-integration-defaults:
 
 - Prefer official SolvaPay SDK helpers over raw HTTP calls when both are possible.
-- Preferred SDK helpers (Node/Next.js): `checkPurchase`, `syncCustomer`, `createPaymentIntent`, `processPayment`, `createTopupPaymentIntent`, `getCustomerBalance`, `createCheckoutSession`, `createCustomerSession`, `activatePlan`, `cancelRenewal`, `reactivateRenewal`, `listPlans`, `trackUsage`, `verifyWebhook`.
-- For Supabase Edge Functions: prefer `@solvapay/supabase` one-liner handlers and `solvapayWebhook` factory over custom Deno fetch handlers.
+- Preferred SDK helpers (Node/Next.js): `checkPurchase`, `syncCustomer`, `createPaymentIntent`, `processPaymentIntent`, `createTopupPaymentIntent`, `getCustomerBalance`, `createCheckoutSession`, `createCustomerSession`, `activatePlan`, `cancelRenewal`, `reactivateRenewal`, `listPlans`, `getMerchant`, `getProduct`, `getPaymentMethod`, `trackUsage`, `verifyWebhook`. All `@solvapay/next` route-wrapper helpers return `Promise<NextResponse>` — return them directly from handlers; use `*Core` primitives from `@solvapay/server` when you need raw data (e.g. in Server Components).
+- For fetch-native runtimes (Deno, Cloudflare Workers, Supabase Edge, Bun): prefer `@solvapay/server/fetch` one-liner handlers (same helper names) and the `solvapayWebhook` factory over hand-rolled fetch handlers. For MCP servers on those runtimes, use `createSolvaPayMcpFetch` from `@solvapay/mcp/fetch`.
 - Keep `SOLVAPAY_SECRET_KEY` and webhook secrets server-side only.
 - Default to hosted checkout and customer portal flows unless embedded UI is explicitly required.
 - Use `activatePlan` for free plans, credit-based activation, and plan switching instead of building custom flows.

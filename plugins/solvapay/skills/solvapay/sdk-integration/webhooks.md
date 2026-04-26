@@ -10,83 +10,31 @@ Use webhooks to keep local state in sync with SolvaPay billing events.
 ## Required Steps
 
 1. Configure webhook endpoint in SolvaPay Console.
-2. Read raw request body (use `express.raw()` or `request.text()`).
-3. Verify `SV-Signature` header with `SOLVAPAY_WEBHOOK_SECRET` using `verifyWebhook`.
-4. Process event idempotently (use `SV-Delivery` header as dedupe key).
+2. Read raw request body.
+3. Verify `x-solvapay-signature` with `SOLVAPAY_WEBHOOK_SECRET`.
+4. Process event idempotently.
 5. Update database and invalidate caches.
-6. Return 2xx quickly; move heavy side effects to async workers.
+6. Return success quickly, move heavy side effects to async workers.
 
-## Signature Scheme
+## Common Events
 
-Header: `SV-Signature: t={unix_timestamp},v1={hmac_hex}`
-
-HMAC: `SHA-256(whsec_secret, "{timestamp}.{rawBody}")`
-
-The SDK `verifyWebhook` function handles parsing, HMAC verification, and timestamp tolerance (300 s default).
-
-## Event Types
-
-### Payment Events
-
-| Event | Description |
-|---|---|
-| `payment.succeeded` | Payment successfully processed |
-| `payment.failed` | Payment attempt failed |
-| `payment.refunded` | Refund successfully processed |
-| `payment.refund_failed` | Refund attempt failed |
-
-### Purchase Events
-
-| Event | Description |
-|---|---|
-| `purchase.created` | New purchase created |
-| `purchase.updated` | Purchase modified (plan change, renewal, etc.) |
-| `purchase.cancelled` | Purchase cancelled |
-| `purchase.expired` | Purchase expired |
-| `purchase.suspended` | Purchase suspended due to non-payment |
-
-### Customer Events
-
-| Event | Description |
-|---|---|
-| `customer.created` | Customer created |
-| `customer.updated` | Customer updated |
-| `customer.deleted` | Customer deleted |
-
-These are curated business events. Internal CRUD events for products, plans, and
-transactions are not emitted as webhooks.
-
-## Webhook Payload Shape
-
-```json
-{
-  "id": "evt_…",
-  "type": "purchase.created",
-  "created": 1740000000,
-  "api_version": "2025-10-01",
-  "data": { "object": { … }, "previous_attributes": null },
-  "livemode": false,
-  "request": { "id": null, "idempotency_key": null }
-}
-```
-
-Additional headers: `SV-Event-Id`, `SV-Delivery`, `User-Agent: SolvaPay/1.0 (+webhooks)`.
+- `purchase.created`
+- `purchase.updated`
+- `purchase.cancelled`
+- `payment.succeeded`
+- `payment.failed`
 
 ## Next.js Pattern
 
 ```typescript
 import { verifyWebhook } from '@solvapay/server'
 
-const body = await request.text()
-const signature = request.headers.get('sv-signature')
-if (!signature) return NextResponse.json({ error: 'Missing signature' }, { status: 401 })
-
-const event = verifyWebhook({
-  body,
-  signature,
-  secret: process.env.SOLVAPAY_WEBHOOK_SECRET!,
-})
-// event.type, event.data.object, event.livemode, etc.
+const payload = await request.text()
+const signature = request.headers.get('x-solvapay-signature')
+const ok = signature
+  ? verifyWebhook(payload, signature, { secret: process.env.SOLVAPAY_WEBHOOK_SECRET! })
+  : false
+if (!ok) return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
 ```
 
 ## Express Pattern
@@ -97,15 +45,12 @@ import { verifyWebhook } from '@solvapay/server'
 
 const app = express()
 app.post('/api/webhooks/solvapay', express.raw({ type: 'application/json' }), async (req, res) => {
-  const signature = req.headers['sv-signature'] as string | undefined
-  if (!signature) return res.status(401).json({ error: 'Missing signature' })
-
-  const event = verifyWebhook({
-    body: req.body.toString(),
-    signature,
-    secret: process.env.SOLVAPAY_WEBHOOK_SECRET!,
-  })
-
+  const signature = req.headers['x-solvapay-signature'] as string | undefined
+  const payload = req.body.toString()
+  if (!signature || !verifyWebhook(payload, signature, { secret: process.env.SOLVAPAY_WEBHOOK_SECRET! })) {
+    return res.status(401).json({ error: 'Invalid signature' })
+  }
+  const event = JSON.parse(payload)
   await handleWebhookEvent(event)
   return res.json({ received: true })
 })
@@ -119,14 +64,8 @@ app.post('/api/webhooks/solvapay', express.raw({ type: 'application/json' }), as
 | `purchase.updated` | update access tier/limits (also fires on reactivation — `cancelledAt` cleared) |
 | `purchase.cancelled` | schedule downgrade or revoke at period end |
 | `purchase.expired` | revoke access (also fires when plan switch expires old purchase) |
-| `purchase.suspended` | restrict access, notify customer |
 | `payment.succeeded` | record payment and clear payment retry flags |
 | `payment.failed` | mark account at risk and notify customer |
-| `payment.refunded` | record refund, reverse credits |
-| `payment.refund_failed` | log failure, retry or escalate |
-| `customer.created` | provision customer resources |
-| `customer.updated` | sync customer profile |
-| `customer.deleted` | clean up customer data |
 
 ## Reactivation and Plan Switching Events
 
@@ -141,7 +80,7 @@ Handle both events to keep local access state accurate during plan switches.
 
 ## Idempotency Strategy
 
-- Store processed `SV-Delivery` IDs (or `event.id` + endpoint).
+- Store processed webhook event IDs (or stable dedupe keys).
 - Ignore repeats safely and return success.
 - Wrap state mutations in transactions where possible.
 
@@ -150,8 +89,7 @@ Handle both events to keep local access state accurate during plan switches.
 - Return `401` for invalid signatures.
 - Return `5xx` only when retry is safe and needed.
 - Log unknown event types and return `200` unless blocking.
-- Deliveries retry with exponential backoff (5 min -> 72 hours, max 12 attempts).
-- After 12 failures the endpoint is auto-disabled.
+- Keep a dead-letter queue/work item list for repeated failures.
 
 ## Verification Checklist
 
