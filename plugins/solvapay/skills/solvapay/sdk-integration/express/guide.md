@@ -2,6 +2,12 @@
 
 Use SolvaPay paywall wrappers around Express business handlers.
 
+## Prerequisites
+
+- Run `npx solvapay init` to authenticate, write `SOLVAPAY_SECRET_KEY` to
+  `.env`, and install base SDK packages.
+- Base packages from init are sufficient for this flow.
+
 ## Docs References (Topic-Based)
 
 - Topics: `express guide`, `limits`, `usage`, `checkout sessions`, `error handling`, `testing`.

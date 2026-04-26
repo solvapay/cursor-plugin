@@ -12,6 +12,11 @@ This guide is for web checkout flows, not Hosted MCP Pay configuration.
 - **Next.js**: fully supported -> [nextjs/guide.md](nextjs/guide.md)
 - **React (no Next.js)**: partial guidance -> [react/guide.md](react/guide.md)
 
+## Prerequisites
+
+Before stack-specific implementation, run `npx solvapay init` to configure
+`SOLVAPAY_SECRET_KEY` and install base SDK packages.
+
 For advanced use cases (usage metering, Express/MCP paths, webhook-heavy flows), use [../sdk-integration/guide.md](../sdk-integration/guide.md).
 
 ## Docs Discovery Hints
