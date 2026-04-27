@@ -1,7 +1,7 @@
 {
   "name": "solvapay",
   "displayName": "SolvaPay",
-  "version": "0.9.4",
+  "version": "0.10.0",
   "description": "Integrate SolvaPay with SDK-first guidance for MCP server monetization, paywall enforcement, usage charging, and auth identity patterns.",
   "author": {
     "name": "SolvaPay",
