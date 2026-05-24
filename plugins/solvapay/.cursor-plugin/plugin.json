@@ -25,7 +25,6 @@
     "webhooks",
     "oauth",
     "identity",
-    "mcp-pay",
     "model-context-protocol"
   ],
   "skills": ["skills/solvapay"],
