@@ -18,7 +18,7 @@ A "paid-MCP project" is a directory that has **all** of:
 
 - `package.json` with `@solvapay/mcp` (or `@solvapay/server`) in `dependencies`.
 - `wrangler.jsonc` or `wrangler.toml`.
-- `src/worker.ts` (or similar entrypoint) that calls `createSolvaPayMcpFetch` / `createSolvaPayMcpServer` / `createSolvaPayMcpExpress`.
+- `src/worker.ts` (or similar entrypoint) that calls `createSolvaPayMcpFetch` / `createSolvaPayMcpServer`.
 
 If those exist, **do not scaffold**. Skip ahead to:
 

@@ -49,7 +49,6 @@ Match your runtime to the right `@solvapay/mcp` subpath:
 | Runtime | Subpath | Factory |
 | --- | --- | --- |
 | Cloudflare Workers, Deno, Supabase Edge, Bun, any fetch-first | `@solvapay/mcp/fetch` | `createSolvaPayMcpFetch` |
-| Node + Express | `@solvapay/mcp/express` | `createSolvaPayMcpExpress` |
 | Framework-neutral / custom transport | `@solvapay/mcp` | `createSolvaPayMcpServer` |
 
 See [../hosting/alternatives.md](../hosting/alternatives.md) for the full matrix with platform docs links.
@@ -60,7 +59,7 @@ Follow [../../sdk-integration/mcp-server/guide.md](../../sdk-integration/mcp-ser
 
 - Installing `@solvapay/mcp` + `@solvapay/server`
 - Initializing `createSolvaPay` with your secret key
-- Calling the matching factory (`createSolvaPayMcpFetch` / `createSolvaPayMcpExpress` / `createSolvaPayMcpServer`)
+- Calling the matching factory (`createSolvaPayMcpFetch` / `createSolvaPayMcpServer`)
 - Mounting the OAuth bridge (`/oauth/*` + `/.well-known/*`)
 - Wrapping handlers with `payable.mcp()` / `registerPayable(...)`
 - Resolving customer identity from the bearer token
