@@ -6,14 +6,26 @@ Official Cursor Marketplace plugin for SolvaPay SDK integration, MCP server mone
 
 - Primary audience: developers integrating SolvaPay SDK in code.
 - Included capabilities:
-  - SolvaPay routing skill and domain guides (`skills/solvapay`)
-  - CLI-first SDK setup guidance (`npx solvapay init`) in SDK integration skills
+  - Five skills auto-discovered from `skills/` — see "Bundled skills" below
+  - CLI-first SDK setup guidance (`npx solvapay init`)
   - SDK-first MCP server monetization guidance (paywalls, usage charging, auth/identity)
   - SolvaPay Docs MCP (`solvapay-docs`) for up-to-date documentation retrieval
   - SolvaPay Admin MCP (`solvapay-admin`) for product/plan/customer management
   - Session-start hook for proactive SolvaPay setup detection
   - Lightweight rules for safety and implementation quality
 - Single-plugin strategy: ship one cohesive plugin first for faster review and clearer onboarding.
+
+## Bundled skills
+
+| Skill | Purpose |
+| --- | --- |
+| `skills/solvapay/` | Router — disambiguates vague intent and points at the right surface skill |
+| `skills/create-mcp-app/` | Create or scaffold a paid MCP server on Cloudflare Workers (OpenAPI or hand-written) |
+| `skills/sdk-integration/` | TypeScript SDK paywall, checkout, usage, webhooks for Next.js / React / Express / MCP / Supabase Edge |
+| `skills/website-checkout/` | Hosted checkout and customer portal for web apps |
+| `skills/lovable-checkout/` | Paste-in preview-only checkout for Lovable (Vite + shadcn/ui + Supabase Edge) |
+
+Cursor invokes each skill as `/solvapay:<skill>` once the plugin is installed.
 
 ## Quick start
 
@@ -35,13 +47,12 @@ Official Cursor Marketplace plugin for SolvaPay SDK integration, MCP server mone
 
 ## Included files
 
-- `skills/solvapay/`: integration, checkout, and onboarding guides
-- `skills/solvapay/sdk-integration/mcp-server/guide.md`: MCP paywall, usage, and auth identity patterns
+- `skills/`: five sibling skills (see "Bundled skills" above) — auto-discovered by Cursor
 - `rules/`: SolvaPay safety and review rules
 - `hooks/hooks.json`: hook configuration for session-start setup detection
 - `scripts/detect-solvapay.sh`: lightweight workspace detection script used by hooks
 - `mcp.json`: SolvaPay Docs + Admin MCP server definitions
-- `.cursor-plugin/plugin.json`: plugin metadata and explicit component paths
+- `.cursor-plugin/plugin.json`: plugin metadata
 
 ## Notes
 
