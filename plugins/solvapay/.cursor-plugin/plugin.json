@@ -1,8 +1,8 @@
 {
   "name": "solvapay",
   "displayName": "SolvaPay",
-  "version": "0.10.0",
-  "description": "Integrate SolvaPay with SDK-first guidance for MCP server monetization, paywall enforcement, usage charging, and auth identity patterns.",
+  "version": "0.11.0",
+  "description": "Integrate SolvaPay: paid MCP apps (create-mcp-app), TypeScript SDK integration, hosted checkout, and Lovable paste-in checkout.",
   "author": {
     "name": "SolvaPay",
     "email": "contact@solvapay.com"
@@ -27,7 +27,6 @@
     "identity",
     "model-context-protocol"
   ],
-  "skills": ["skills/solvapay"],
   "rules": ["rules"],
   "hooks": "hooks/hooks.json",
   "mcpServers": "mcp.json",
